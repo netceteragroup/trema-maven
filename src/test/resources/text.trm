@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- generated on Wed Dec 16 20:10:10 CET 2009 -->
+<trema masterLang="en">
+  <text key="test1">
+    <context>Test</context>
+    <value lang="de" status="verified">Test (de)</value>
+    <value lang="en" status="verified">Test (en)</value>
+  </text>
+</trema>
+

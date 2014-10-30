@@ -1,0 +1,94 @@
+ ------
+ Export to JSON files
+ ------
+ Andi Hotz
+ ------
+ 2014-05-22
+ ------
+
+Export to JSON
+
+  The {{{../exportJson-mojo.html}trema:exportJson}} goal exports the Trema database into JSON files. A separate json file for each language is created.
+  
+  The use of JSON based language resources is especially useful when the web application does not require a server backend (e.g. with AngularJS).
+
+  The following snippet shows a minimal configuration needed to export the Trema database (*.trm file) into json during the maven build:
+
++-----+
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>ch.netcetera.nca-236-0</groupId>
+      <artifactId>trema-maven-plugin</artifactId>
+      <executions>
+        <execution>        
+         <goals>
+          <goal>exportJson</goal>
+         </goals>
+        </execution>
+      </executions>      
+    </plugin>
+    ...
+  </plugins>
+</build>
++-----+
+
+  The following defaults apply here:
+
+  * The goal exportProperties is executed during the process-sources phase of the build
+
+  * The path to the trema database (.trm file) is expected to be: $\{project.basedir\}/src/main/resources/text.trm
+
+  * all languages are exported
+
+  * all states are exported
+
+  * properties are written into the directory $\{project.build.directory\}/classes/ using filenames text_\<language\>.properties
+  
+  []
+  
+  In case the above defaults are not suitable, the goal can be configured. The following sample shows a more sophisticated configuration of the goal.
+  
++-----+
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>ch.netcetera.nca-236-0</groupId>
+      <artifactId>trema-maven-plugin</artifactId>      
+      <executions>
+        <execution>
+          <goals>
+            <goal>exportJson</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <!-- explicit path to the trema database file to be exported -->
+        <tremaFile>${project.basedir}/src/main/resources/vpas.trm</tremaFile>
+        <!-- explicit path for the json files that are generated -->
+        <basename>${project.build.directory}/classes/resources/lang</basename>
+        <!-- export the language de_DE into a fallback properties file without the language in the filename -->
+        <defaultlanguage>de_DE</defaultlanguage>
+        <!-- specify the languages to be exported -->
+        <languages>
+          <language>en_US</language>
+          <language>fr_FR</language>
+          <language>it_IT</language>
+        </languages>
+        <!-- specify the text value states to be exported -->
+        <states>
+          <state>verified</state>
+          <state>special</state>
+        </states>
+        <!-- apply a filter to transform text values during export -->
+        <filters>
+          <filter>messageformat</filter>
+        </filters>
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
++-----+

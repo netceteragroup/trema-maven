@@ -1,0 +1,94 @@
+ ------
+ Export to Java properties files
+ ------
+ Thomas Zueblin
+ ------
+ 2011-12-22
+ ------
+
+Export to Java properties
+
+  The {{{../exportProperties-mojo.html}trema:exportProperties}} goal exports the Trema database into Java properties. A separate properties file for each language is created.
+  
+  More info about Java ResourceBundles/properties can be found here {{http://docs.oracle.com/javase/tutorial/i18n/resbundle/index.html}} 
+ 
+  The following snippet shows a minimal configuration needed to export the Trema database (*.trm file) into properties during the maven build:
+
++-----+
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>ch.netcetera.nca-236-0</groupId>
+      <artifactId>trema-maven-plugin</artifactId>
+      <executions>
+        <execution>        
+         <goals>
+          <goal>exportProperties</goal>
+         </goals>
+        </execution>
+      </executions>      
+    </plugin>
+    ...
+  </plugins>
+</build>
++-----+
+
+  The following defaults apply here:
+
+  * The goal exportProperties is executed during the process-sources phase of the build
+
+  * The path to the trema database (.trm file) is expected to be: $\{project.basedir\}/src/main/resources/text.trm
+
+  * all languages are exported
+
+  * all states are exported
+
+  * properties are written into the directory $\{project.build.directory\}/classes/ using filenames text_\<language\>.properties
+  
+  []
+  
+  In case the above defaults are not suitable, the goal can be configured. The following sample shows a more sophisticated configuration of the goal.
+  
++-----+
+<build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>ch.netcetera.nca-236-0</groupId>
+      <artifactId>trema-maven-plugin</artifactId>      
+      <executions>
+        <execution>
+          <goals>
+            <goal>exportProperties</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <!-- explicit path to the trema database file to be exported -->
+        <tremaFile>${project.basedir}/src/main/resources/vpas.trm</tremaFile>
+        <!-- explicit path for the properties files that are generated -->
+        <basename>${project.build.directory}/classes/resources/MyApplicationResources</basename>
+        <!-- export the language de_DE into a fallback properties file without the language in the filename -->
+        <defaultlanguage>de_DE</defaultlanguage>
+        <!-- specify the languages to be exported -->
+        <languages>
+          <language>en_US</language>
+          <language>fr_FR</language>
+          <language>it_IT</language>
+        </languages>
+        <!-- specify the text value states to be exported -->
+        <states>
+          <state>verified</state>
+          <state>special</state>
+        </states>
+        <!-- apply a filter to transform text values during export -->
+        <filters>
+          <filter>messageformat</filter>
+        </filters>
+      </configuration>
+    </plugin>
+    ...
+  </plugins>
+</build>
++-----+

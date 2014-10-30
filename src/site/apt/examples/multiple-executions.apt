@@ -1,0 +1,54 @@
+ ------
+ Multiple executions of a goal in a build
+ ------
+ Thomas Zueblin
+ ------
+ 2011-12-22
+ ------
+ 
+ Multiple exports during a build
+
+  It is possible to have several Trema databases in a module and export them all during the module build (several executions of a Trema Maven Plugin goal with differnt configuration options). 
+  Note that separate output files need to be created for each Trema database, Trema does not support to export different databases into the same set of output files.
+
+  The following snippet shows a sample. Multiple executions of the same goal are configured, each execution having a separate configuration:
+
++-----+
+<build>
+  ...
+  <plugins>
+    ... 
+    <plugin>
+      <groupId>ch.netcetera.nca-236-0</groupId>
+      <artifactId>trema-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <id>exportTrmFile1</id>
+          <goals>
+            <goal>exportProperties</goal>
+          </goals>
+          <configuration>
+            <tremaFile>${project.basedir}/src/main/resources/texts1.trm</tremaFile>  
+            <basename>${project.build.directory}/classes/Texts1</basename>
+            <filters>
+              <filter>messageformat</filter>
+            </filters>      
+          </configuration>
+        </execution>
+        <execution>
+          <id>exportTrmFile2</id>
+          <goals>
+            <goal>exportProperties</goal>
+          </goals>
+          <configuration>
+            <tremaFile>${project.basedir}/src/main/resources/texts2.trm</tremaFile>  
+            <basename>${project.build.directory}/classes/Texts2</basename>      
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  ...
+</build>
++-----+

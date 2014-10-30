@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.netcetera.trema</groupId>
+  <artifactId>trema-maven-plugin</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+  <name>${project.artifactId}</name>
+  <description>Trema - Text resource management</description>
+  <url>https://github.com/netceteragroup/trema-maven-plugin</url>
+  <inceptionYear>2008</inceptionYear>
+
+  <organization>
+    <name>Netcetera</name>
+    <url>http://www.netcetera.com</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>jstadler</id>
+      <name>Jacques Stadler</name>
+      <email>firstname dot lastname at netcetera.com</email>
+    </developer>
+    <developer>
+      <id>mstoer</id>
+      <name>Marcel Stör</name>
+      <email>firstname dot lastname at netcetera.com</email>
+    </developer>
+  </developers>
+
+  <properties>
+    <jdk.version>1.7</jdk.version>
+    <maven.version>3.0.5</maven.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Dependencies -->
+    <junit.version>4.11</junit.version>
+    <mockito.version>1.9.5</mockito.version>
+    <trema-core.version>1.0.0-SNAPSHOT</trema-core.version>
+    <maven-plugin-api.version>3.2.2</maven-plugin-api.version>
+    <plexus-build-api.version>0.0.7</plexus-build-api.version>
+
+    <!-- Plugins -->
+    <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+    <maven-site-plugin.version>3.4</maven-site-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.netcetera.trema</groupId>
+      <artifactId>trema-core</artifactId>
+      <version>${trema-core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven-plugin-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.sonatype.plexus</groupId>
+      <artifactId>plexus-build-api</artifactId>
+      <version>${plexus-build-api.version}</version>
+    </dependency>
+
+    <!-- Test Dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven-site-plugin.version}</version>
+        <configuration>
+          <reportPlugins>
+            <!-- generates the maven plugin info page -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-plugin-plugin</artifactId>
+              <configuration>
+                <requirements>
+                  <maven>${maven.version}</maven>
+                  <jdk>${jdk.version}</jdk>
+                </requirements>
+              </configuration>
+            </plugin>
+          </reportPlugins>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <encoding>UTF-8</encoding>
+            <source>${jdk.version}</source>
+            <target>${jdk.version}</target>
+          </configuration>
+      </plugin>
+      
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+          <configuration>
+            <runOrder>random</runOrder>
+          </configuration>
+        </plugin>
+    </plugins>
+  
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <versionRange>[3.2,)</versionRange>
+                    <goals>
+                      <goal>descriptor</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>

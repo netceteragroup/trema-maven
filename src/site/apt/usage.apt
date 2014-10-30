@@ -1,0 +1,110 @@
+ ------
+ Usage
+ ------
+ Thomas Zueblin
+ ------
+ 2011-12-22
+ ------
+
+
+Usage
+
+ In order to use the Trema Maven Plugin in a maven project, the plugin needs to be configured in the build section of the project pom.
+ 
+ Please check the examples section for basic and more advanced configuration examples. 
+ 
+ Both available goals of the plugin are by default bound to the 'process-sources' phase of the build lifecycle. 
+ 
+ This means that the Trema Maven Plugin is automatically executed during a standard maven build (e.g. mvn install). It is therefore usually not necessary to explicitly call the goals.
+  
+ However this can of course be done:
+ 
+* Exporting to Java Properties
+
++-----+
+mvn trema:exportProperties
++-----+
+
+* Exporting to JSON files
+
++-----+
+mvn trema:exportJson
++-----+
+
+* Exporting to Android XML files
+
++-----+
+mvn trema:exportAndroid
++-----+
+
+
+Using filters
+
+  Output filters can be configured for the <<exportProperties>> goal and allow to modify text values during the export process (note that filters are currently not supported for <<exportAndroid>>).
+  
+  Currently three filters are available:
+ 
+  * messageformat 
+  
+  * addkeytovalue
+
+  * replacehtmlnewline
+  
+  []
+  
+  A sample configuration showing how to configure a filter is available on the {{{./examples/export-to-properties.html}Export to Java Properties}} page.
+  
+* 'MessageFormat' filter
+
+  When properties are consumed using the {{{http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html}MessageFormat}} class, it is necessary
+  to apply a special escaping for single quotes within text values: Within a String, a doubled single quote('') represents a single single quote. 
+  
+  This means that in a properties file each single quote needs to be doubled in order to be displayed correctly in the application. This is exactly what the <<messageformat>> filter does:
+
++-----+
+<value lang="en" status="initial">It's a girl</value>
++-----+
+
+  The above value in the Trema database results in the following value in the exported properties file:
+
++-----+
+textkey=It''s a girl
++-----+
+
+  Since Girders makes use of MessageFormat, projects using Girders should consider using this filter (in conjunction with setting the 'alwaysUseMessageFormat' property, see {{{http://buildfs.group.nca/dav/projects/nca-266-7/current/girders/reference/core.html}Girders core documentation}} for details.
+    
+* 'Add key to value' filter
+
+  This filter is for debugging purposes only. It allows to append the text key to the text value. Having the key displayed together with text value allows to easily match the texts that are displayed in a GUI to the texts as defined in the Trema database. 
+  
++-----+
+<text key="textkey">
+  <context>test</context>  
+  <value lang="en" status="initial">It's a girl</value>
+</text>
++-----+
+  
+  The above value in the Trema database results in the following value in the exported properties file:
+
++-----+
+textkey=It's a girl [textkey]
++-----+
+
+* 'Replace Html Newline' filter
+
+  This filter replaces newlines with a HTML break. This allows for proper formatting of ASCII formatted text in HTML. Supported are the newline characters for Windows (\r\n), *nix (\n) and Mac (\r). Note that the newlines are multiple characters (\n is not character with ASCII code 10, but '/' and 'n').
+
++-----+
+<text key="textkey">
+  <context>test</context>
+  <value lang="en" status="initial">It's a\ngirl</value>
+</text>
++-----+
+
+  The above value in the Trema database results in the following value in the exported properties file:
+
++-----+
+textkey=It's a<br/>girl
++-----+
+
+

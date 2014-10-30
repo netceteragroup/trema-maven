@@ -1,0 +1,44 @@
+ ------
+ Introduction
+ ------
+ Thomas Zueblin
+ ------
+ 2011-12-21
+ ------
+
+Trema Maven Plugin
+
+ The Trema Maven Plugin is used to export a Trema database (*.trm file) into language resource files to be consumed by the application. Currently three types
+ of output files are supported. Java properties, JSON and Android string.xml files.
+ 
+* Goals Overview
+
+   The Trema Maven Plugin has three goals:
+
+   * {{{./exportProperties-mojo.html}trema:exportProperties}} is used to export the contents of the Trema database into Java properties files
+
+   * {{{./exportJson-mojo.html}trema:exportJson}} is used to export the contents of the Trema database into JSON files
+
+   * {{{./exportAndroid-mojo.html}trema:exportAndroid}} is used to export the contents of the Trema database into XML files suitable for Android applications
+
+* Usage
+
+  General instructions on how to use the Trema Maven Plugin can be found on the {{{./usage.html}usage page}} and configuration samples are provided in the
+  examples section.
+  
+  Information about the Trema Eclipse Plugin can be found in the {{{http://buildfs.group.nca/dav/projects/nca-236-0/current/rcp/ch.netcetera.eclipse.trema.manual/index.html}Trema Eclipse Plugin Manual}}
+    
+  In case you still have questions regarding the plugin's usage feel free to contact {{{mailto:trema@netcetera.ch}trema@netcetera.ch}}
+  
+
+* Examples
+
+   The following examples show how to use the Trema Maven Plugin:
+
+   * {{{./examples/export-to-properties.html}Export to Java Properties}}
+
+   * {{{./examples/export-to-json.html}Export to JSON files}}
+
+   * {{{./examples/export-to-android-xml.html}Export to Android XML}}
+
+   * {{{./examples/multiple-executions.html}Multiple executions of a goal}}

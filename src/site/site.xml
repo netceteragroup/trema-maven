@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+  Copyright (C) 2007-2011 by Netcetera AG.
+  All rights reserved.
+  
+  The copyright to the computer program(s) herein is the property of
+  Netcetera AG, Switzerland. The program(s) may be used and/or copied
+  only with the written permission of Netcetera AG or in accordance
+  with the terms and conditions stipulated in the agreement/contract
+  under which the program(s) have been supplied.
+  
+  @(#) $Id: site.xml,v 1.1 2008-08-30 10:27:19 corsin Exp $
+-->
+
+<project name="${project.name}">
+
+  <publishDate position="left" format="yyyy-MM-dd HH:mm" />
+  <version position="left" />
+
+  <skin>
+    <groupId>ch.netcetera.nca-209-2.maven2.skin</groupId>
+    <artifactId>skin</artifactId>
+    <version>1</version>
+  </skin>
+
+  <poweredBy>
+    <logo name="Maven" href="http://maven.apache.org/"
+      img="images/build-by-maven-white.png" />
+  </poweredBy>
+
+  <body>
+    <menu name="Overview">
+      <item name="Introduction" href="index.html"/>
+      <item name="Goals" href="plugin-info.html"/>
+      <item name="Usage" href="usage.html"/>      
+    </menu>
+    <menu name="Examples">
+      <item name="Export to Java Properties" href="/examples/export-to-properties.html"/>
+        <item name="Export to JSON files" href="/examples/export-to-json.html"/>
+      <item name="Export to Android xml" href="/examples/export-to-android-xml.html"/>
+      <item name="Multiple executions of a goal" href="/examples/multiple-executions.html"/>
+    </menu>
+    <menu ref="reports" />
+  </body>
+  
+</project>
