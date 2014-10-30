@@ -1,7 +1,7 @@
 /**
  *
  */
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 import org.sonatype.plexus.build.incremental.BuildContext;
 
-import ch.netcetera.trema.core.exporting.OutputStreamFactory;
+import com.netcetera.trema.core.exporting.OutputStreamFactory;
 
 
 /**
@@ -45,7 +45,7 @@ public class BuildContextAwareOutputStreamFactory implements OutputStreamFactory
   /*
    * (non-Jsdoc)
    * @see
-   * ch.netcetera.trema.console.OutputStreamFactory#createOutputStream(java.
+   * com.netcetera.trema.console.OutputStreamFactory#createOutputStream(java.
    * io.File)
    */
   @Override

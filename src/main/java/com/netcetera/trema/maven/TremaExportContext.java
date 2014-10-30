@@ -1,10 +1,10 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
-import ch.netcetera.trema.core.Status;
-import ch.netcetera.trema.core.api.IExportFilter;
-import ch.netcetera.trema.core.exporting.AddKeyToValueExportFilter;
-import ch.netcetera.trema.core.exporting.HtmlLineBreakConverter;
-import ch.netcetera.trema.core.exporting.MessageFormatEscapingFilter;
+import com.netcetera.trema.core.Status;
+import com.netcetera.trema.core.api.IExportFilter;
+import com.netcetera.trema.core.exporting.AddKeyToValueExportFilter;
+import com.netcetera.trema.core.exporting.HtmlLineBreakConverter;
+import com.netcetera.trema.core.exporting.MessageFormatEscapingFilter;
 
 
 /**

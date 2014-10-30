@@ -1,18 +1,18 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 
 /**
- * Export data from a Trema file into property files.
+ * Export data from a Trema file into json files.
  *
- * @goal exportProperties
+ * @goal exportJson
  * @phase process-sources
  * @threadSafe
  */
-public class ExportPropertiesMojo extends AbstractExportMojo {
+public class ExportJsonMojo extends AbstractExportMojo {
 
   /**
    * Basename for the export. Path and beginning of the filename to be used for
-   * the properties.
+   * the json.
    *
    * @parameter property="basename"
    * default-value="${project.build.directory}/classes/text"
@@ -23,7 +23,7 @@ public class ExportPropertiesMojo extends AbstractExportMojo {
   /**
    * Defaultlanguage. If specified, this language will be exported into a
    * default properties file without the language in the filename, eg.
-   * text.properties.
+   * text.json.
    *
    * @parameter property="defaultlanguage"
    */
@@ -70,7 +70,7 @@ public class ExportPropertiesMojo extends AbstractExportMojo {
 
   @Override
   protected ExportType getExportType() {
-    return ExportType.PROPERTIES;
+    return ExportType.JSON;
   }
 
   @Override

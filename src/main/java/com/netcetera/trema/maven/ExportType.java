@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 
 /**

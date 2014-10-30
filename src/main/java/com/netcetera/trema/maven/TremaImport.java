@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,14 +8,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
-import ch.netcetera.trema.core.ParseException;
-import ch.netcetera.trema.core.XMLDatabase;
-import ch.netcetera.trema.core.api.IDatabase;
-import ch.netcetera.trema.core.api.IImportSource;
-import ch.netcetera.trema.core.importing.CSVFile;
-import ch.netcetera.trema.core.importing.Change;
-import ch.netcetera.trema.core.importing.ChangesAnalyzer;
-import ch.netcetera.trema.core.importing.XLSFile;
+import com.netcetera.trema.core.ParseException;
+import com.netcetera.trema.core.XMLDatabase;
+import com.netcetera.trema.core.api.IDatabase;
+import com.netcetera.trema.core.api.IImportSource;
+import com.netcetera.trema.core.importing.CSVFile;
+import com.netcetera.trema.core.importing.Change;
+import com.netcetera.trema.core.importing.ChangesAnalyzer;
+import com.netcetera.trema.core.importing.XLSFile;
 
 
 /**

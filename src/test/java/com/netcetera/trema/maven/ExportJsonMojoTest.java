@@ -1,20 +1,29 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
+import java.net.URL;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Unit test for the property file export mojo ({@link ExportPropertiesMojo}).
+ * Unit test for the property file export mojo ({@link com.netcetera.trema.maven.ExportPropertiesMojo}).
  */
-public class ExportPropertiesMojoTest {
+public class ExportJsonMojoTest {
+
+  private String tremaFilePath;
+  @Before
+  public void setup() {
+    URL url = getClass().getClassLoader().getResource("text.trm");
+    tremaFilePath =  url.getFile();
+  }
 
 
   /**
    * Test method for
-   * {@link ch.netcetera.trema.maven.ExportPropertiesMojo#execute()}.
+   * {@link ExportJsonMojo#execute()}.
    *
    * @throws Exception if the test failed
    */
@@ -22,21 +31,21 @@ public class ExportPropertiesMojoTest {
   public void testExecute() throws Exception {
 
     // delete the target files if they exist
-    new File("target/classes/test_de.properties").delete();
-    new File("target/classes/test_en.properties").delete();
-    new File("target/classes/test_fr.properties").delete();
+    new File("target/classes/test_de.json").delete();
+    new File("target/classes/test_en.json").delete();
+    new File("target/classes/test_fr.json").delete();
 
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
     mojo.execute();
 
     // make sure the files where written
-    Assert.assertTrue(new File("target/classes/test_de.properties").exists());
-    Assert.assertTrue(new File("target/classes/test_en.properties").exists());
-    Assert.assertTrue(new File("target/classes/test_fr.properties").exists());
+    Assert.assertTrue(new File("target/classes/test_de.json").exists());
+    Assert.assertTrue(new File("target/classes/test_en.json").exists());
+    Assert.assertTrue(new File("target/classes/test_fr.json").exists());
 
   }
 
@@ -47,7 +56,7 @@ public class ExportPropertiesMojoTest {
    */
   @Test(expected = MojoExecutionException.class)
   public void testNoTremaFile() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
+    final ExportJsonMojo mojo = new ExportJsonMojo();
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
@@ -61,7 +70,7 @@ public class ExportPropertiesMojoTest {
    */
   @Test(expected = MojoExecutionException.class)
   public void testNonExistentTremaFile() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
+    final ExportJsonMojo mojo = new ExportJsonMojo();
     mojo.setTremaFile("src/test/resources/text-nonesistent.trm");
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
@@ -76,7 +85,7 @@ public class ExportPropertiesMojoTest {
    */
   @Test(expected = MojoExecutionException.class)
   public void testNoBasename() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
+    final ExportJsonMojo mojo = new ExportJsonMojo();
     mojo.setTremaFile("src/test/resources/text.trm");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
@@ -90,8 +99,8 @@ public class ExportPropertiesMojoTest {
    */
   @Test
   public void testNoLanguages() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setBasename("target/classes/test");
     mojo.setStates(new String[]{"verified"});
     mojo.execute();
@@ -104,8 +113,8 @@ public class ExportPropertiesMojoTest {
    */
   @Test
   public void testEmptyLanguages() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{});
     mojo.setStates(new String[]{"verified"});
@@ -119,8 +128,8 @@ public class ExportPropertiesMojoTest {
    */
   @Test
   public void testInvalidLanguages() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"foo"});
     mojo.setStates(new String[]{"verified"});
@@ -134,8 +143,8 @@ public class ExportPropertiesMojoTest {
    */
   @Test
   public void testMessageFormatFilter() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"foo"});
     mojo.setStates(new String[]{"verified"});
@@ -150,7 +159,7 @@ public class ExportPropertiesMojoTest {
    */
   @Test(expected = MojoExecutionException.class)
   public void testNonExistingFilter() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
+    final ExportJsonMojo mojo = new ExportJsonMojo();
     mojo.setTremaFile("src/test/resources/text.trm");
     mojo.setBasename("target/classes/test");
     mojo.setLanguages(new String[]{"foo"});
@@ -166,8 +175,8 @@ public class ExportPropertiesMojoTest {
    */
   @Test
   public void testDefaultLanguage() throws Exception {
-    final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text.trm");
+    final ExportJsonMojo mojo = new ExportJsonMojo();
+    mojo.setTremaFile(tremaFilePath);
     mojo.setLanguages(new String[]{});
     mojo.setBasename("target/classes/test");
     mojo.setDefaultlanguage("de");

@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,19 +12,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import ch.netcetera.trema.common.TremaUtil;
-import ch.netcetera.trema.core.ParseException;
-import ch.netcetera.trema.core.Status;
-import ch.netcetera.trema.core.XMLDatabase;
-import ch.netcetera.trema.core.exporting.AndroidExporter;
-import ch.netcetera.trema.core.exporting.CSVExporter;
-import ch.netcetera.trema.core.exporting.ExportException;
-import ch.netcetera.trema.core.exporting.FileOutputStreamFactory;
-import ch.netcetera.trema.core.exporting.JsonExporter;
-import ch.netcetera.trema.core.exporting.OutputStreamFactory;
-import ch.netcetera.trema.core.exporting.PropertiesExporter;
-import ch.netcetera.trema.core.exporting.TremaCSVPrinter;
-import ch.netcetera.trema.core.exporting.XLSExporter;
+import com.netcetera.trema.common.TremaUtil;
+import com.netcetera.trema.core.ParseException;
+import com.netcetera.trema.core.Status;
+import com.netcetera.trema.core.XMLDatabase;
+import com.netcetera.trema.core.exporting.AndroidExporter;
+import com.netcetera.trema.core.exporting.CSVExporter;
+import com.netcetera.trema.core.exporting.ExportException;
+import com.netcetera.trema.core.exporting.FileOutputStreamFactory;
+import com.netcetera.trema.core.exporting.JsonExporter;
+import com.netcetera.trema.core.exporting.OutputStreamFactory;
+import com.netcetera.trema.core.exporting.PropertiesExporter;
+import com.netcetera.trema.core.exporting.TremaCSVPrinter;
+import com.netcetera.trema.core.exporting.XLSExporter;
 
 
 /**
@@ -229,7 +229,7 @@ public class TremaExport {
    * Export the database as JSON file.
    * @param xmlDb trema file model
    * @throws java.io.IOException file could not be read
-   * @throws ch.netcetera.trema.core.exporting.ExportException could not execute the export
+   * @throws com.netcetera.trema.core.exporting.ExportException could not execute the export
    */
   // Visible for testing
   void exportAsJson(XMLDatabase xmlDb) throws IOException, ExportException {

@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +10,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import ch.netcetera.trema.core.api.IExporter;
-import ch.netcetera.trema.core.exporting.AndroidExporter;
-import ch.netcetera.trema.core.exporting.CSVExporter;
-import ch.netcetera.trema.core.exporting.JsonExporter;
-import ch.netcetera.trema.core.exporting.OutputStreamFactory;
-import ch.netcetera.trema.core.exporting.PropertiesExporter;
-import ch.netcetera.trema.core.exporting.XLSExporter;
+import com.netcetera.trema.core.api.IExporter;
+import com.netcetera.trema.core.exporting.AndroidExporter;
+import com.netcetera.trema.core.exporting.CSVExporter;
+import com.netcetera.trema.core.exporting.JsonExporter;
+import com.netcetera.trema.core.exporting.OutputStreamFactory;
+import com.netcetera.trema.core.exporting.PropertiesExporter;
+import com.netcetera.trema.core.exporting.XLSExporter;
 
 /**
  * Test for the exporter factory.

@@ -1,13 +1,13 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ch.netcetera.trema.core.api.IExportFilter;
-import ch.netcetera.trema.core.exporting.AddKeyToValueExportFilter;
-import ch.netcetera.trema.core.exporting.HtmlLineBreakConverter;
-import ch.netcetera.trema.core.exporting.MessageFormatEscapingFilter;
+import com.netcetera.trema.core.api.IExportFilter;
+import com.netcetera.trema.core.exporting.AddKeyToValueExportFilter;
+import com.netcetera.trema.core.exporting.HtmlLineBreakConverter;
+import com.netcetera.trema.core.exporting.MessageFormatEscapingFilter;
 
 /**
  * Test class.

@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,13 +9,13 @@ import org.mockito.BDDMockito;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import ch.netcetera.trema.core.Status;
-import ch.netcetera.trema.core.XMLDatabase;
-import ch.netcetera.trema.core.api.IExportFilter;
-import ch.netcetera.trema.core.api.ITextNode;
-import ch.netcetera.trema.core.exporting.ExportException;
-import ch.netcetera.trema.core.exporting.JsonExporter;
-import ch.netcetera.trema.core.exporting.OutputStreamFactory;
+import com.netcetera.trema.core.Status;
+import com.netcetera.trema.core.XMLDatabase;
+import com.netcetera.trema.core.api.IExportFilter;
+import com.netcetera.trema.core.api.ITextNode;
+import com.netcetera.trema.core.exporting.ExportException;
+import com.netcetera.trema.core.exporting.JsonExporter;
+import com.netcetera.trema.core.exporting.OutputStreamFactory;
 
 /**
  * Test for TremaExport.

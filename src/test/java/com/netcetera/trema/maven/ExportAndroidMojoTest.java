@@ -1,4 +1,4 @@
-package ch.netcetera.trema.maven;
+package com.netcetera.trema.maven;
 
 import java.io.File;
 
@@ -6,6 +6,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Test for {@link ExportAndroidMojo}.
+ */
 public class ExportAndroidMojoTest {
 
   /**
@@ -21,8 +24,8 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test method for
-   * {@link ch.netcetera.trema.maven.ExportAndroidMojo#execute()}.
-   * 
+   * {@link com.netcetera.trema.maven.ExportAndroidMojo#execute()}.
+   *
    * @throws Exception if the test failed
    */
   @Test
@@ -53,7 +56,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with no trema file specification.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test(expected = MojoExecutionException.class)
@@ -67,7 +70,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with an non-existent trema file.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test(expected = MojoExecutionException.class)
@@ -82,7 +85,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with no EXPORT_PATH.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test(expected = MojoExecutionException.class)
@@ -96,7 +99,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with no languages.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test
@@ -110,7 +113,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with empty language configuration.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test
@@ -125,7 +128,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test with invalid language configuration.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test
@@ -140,7 +143,7 @@ public class ExportAndroidMojoTest {
 
   /**
    * Test using a non-existing export filter.
-   * 
+   *
    * @throws Exception if the test failed
    */
   @Test
