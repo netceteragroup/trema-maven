@@ -13,7 +13,12 @@ import org.junit.Test;
  */
 public class ExportJsonMojoTest {
 
+  private static final String EXTENSION = ".json";
+
+  private ExportMojoTestUtils exportMojoTestUtils = new ExportMojoTestUtils(EXTENSION);
+
   private String tremaFilePath;
+
   @Before
   public void setup() {
     URL url = getClass().getClassLoader().getResource("text.trm");
@@ -30,17 +35,7 @@ public class ExportJsonMojoTest {
   @Test
   public void testExecute() throws Exception {
 
-    // delete the target files if they exist
-    new File("target/classes/test_de.json").delete();
-    new File("target/classes/test_en.json").delete();
-    new File("target/classes/test_fr.json").delete();
-
-    final ExportJsonMojo mojo = new ExportJsonMojo();
-    mojo.setTremaFile(tremaFilePath);
-    mojo.setBasename("target/classes/test");
-    mojo.setLanguages(new String[]{"en", "de", "fr"});
-    mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+    exportMojoTestUtils.executeExportPropertiesMojo(new String[]{"en", "de", "fr"}, new String[]{"verified"});
 
     // make sure the files where written
     Assert.assertTrue(new File("target/classes/test_de.json").exists());

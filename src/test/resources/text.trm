@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- generated on Wed Dec 16 20:10:10 CET 2009 -->
+<!-- generated on Fri Oct 31 14:22:24 CET 2014 -->
 <trema masterLang="en">
-  <text key="test1">
+  <text key="test.simple">
     <context>Test</context>
-    <value lang="de" status="verified">Test (de)</value>
     <value lang="en" status="verified">Test (en)</value>
+    <value lang="de" status="verified">Test (de)</value>
+  </text>
+  <text key="test.umlaute">
+    <context />
+    <value lang="en" status="translated">ÀÉÈÔô</value>
+    <value lang="de" status="translated">ÄöÜ[@</value>
   </text>
 </trema>
 
