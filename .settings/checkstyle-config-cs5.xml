@@ -15,15 +15,6 @@
   <property name="severity" value="warning" />
   <module name="TreeWalker">
     <module name="FileContentsHolder"/>
-    <module name="JavadocStyle">
-      <property name="scope" value="package" />
-    </module>
-    <module name="JavadocType">
-      <property name="scope" value="package" />
-    </module>
-    <module name="JavadocVariable">
-      <property name="scope" value="package" />
-    </module>
     <module name="ConstantName"/>
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
