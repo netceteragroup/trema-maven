@@ -35,7 +35,7 @@ public class ExportJsonMojoTest {
   @Test
   public void testExecute() throws Exception {
 
-    exportMojoTestUtils.executeExportPropertiesMojo(new String[]{"en", "de", "fr"}, new String[]{"verified"});
+    exportMojoTestUtils.executeExportJsonMojo(new String[]{"en", "de", "fr"}, new String[]{"verified"});
 
     // make sure the files where written
     Assert.assertTrue(new File("target/classes/test_de.json").exists());
