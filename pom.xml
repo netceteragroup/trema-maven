@@ -317,5 +317,16 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+        <!--Turn of the silly Java 8 Javadoc linter because it complains about unknown annotations when it encounters Mojo JavaDoc Tags such as '@phase'.-->
+        <additionalparam>-Xdoclint:none</additionalparam>
+      </properties>
+    </profile>
   </profiles>
 </project>
