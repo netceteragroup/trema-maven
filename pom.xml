@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.netcetera.trema</groupId>
   <artifactId>trema-maven-plugin</artifactId>
-  <version>0.2.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>${project.artifactId}</name>
   <description>Trema - Text resource management</description>
@@ -43,7 +44,7 @@
     <url>https://github.com/netceteragroup/trema-maven</url>
     <connection>scm:git:git@github.com:netceteragroup/trema-maven.git</connection>
     <developerConnection>scm:git:git@github.com:netceteragroup/trema-maven.git</developerConnection>
-    <tag>trema-maven-plugin-0.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
@@ -225,7 +226,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>
