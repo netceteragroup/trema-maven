@@ -200,7 +200,6 @@ public class TremaExport {
       String fileName = baseName + "_" + languages[i] + ".csv";
       print("Writing CSV file " + fileName + "...");
 
-      @SuppressWarnings("resource")
       Writer writer = null;
       try {
         writer = new OutputStreamWriter(new FileOutputStream(getNewFile(fileName)),
