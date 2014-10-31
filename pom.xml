@@ -8,8 +8,12 @@
   <packaging>maven-plugin</packaging>
   <name>${project.artifactId}</name>
   <description>Trema - Text resource management</description>
-  <url>https://github.com/netceteragroup/trema-maven-plugin</url>
-  <inceptionYear>2008</inceptionYear>
+  <url>https://github.com/netceteragroup/trema-maven</url>
+  <inceptionYear>2014</inceptionYear>
+
+  <prerequisites>
+    <maven>3.0.0</maven>
+  </prerequisites>
 
   <organization>
     <name>Netcetera</name>
@@ -36,7 +40,32 @@
     </developer>
   </developers>
 
+  <scm>
+    <url>https://github.com/netceteragroup/trema-maven</url>
+    <connection>scm:git:git@github.com:netceteragroup/trema-maven.git</connection>
+    <developerConnection>scm:git:git@github.com:netceteragroup/trema-maven.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <name>Maven Central Snapshot Repository</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <name>Maven Central Staging Repository</name>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <properties>
+    <!-- How to detect if you're running the latest version of the configured dependencies:
+         mvn -N versions:display-property-updates OR
+         mvn -N versions:display-plugin-updates
+    -->
+
     <jdk.version>1.7</jdk.version>
     <maven.version>3.0.5</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,15 +73,22 @@
 
     <!-- Dependencies -->
     <junit.version>4.11</junit.version>
-    <mockito.version>1.9.5</mockito.version>
-    <trema-core.version>1.0.0-SNAPSHOT</trema-core.version>
-    <maven-plugin-api.version>3.2.2</maven-plugin-api.version>
+    <mockito.version>1.10.8</mockito.version>
+    <trema-core.version>0.1.2</trema-core.version>
+    <maven-plugin-api.version>3.2.3</maven-plugin-api.version>
     <plexus-build-api.version>0.0.7</plexus-build-api.version>
 
     <!-- Plugins -->
+    <coveralls-maven-plugin.version>3.0.1</coveralls-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.7.2.201409121644</jacoco-maven-plugin.version>
     <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+    <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+    <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
+    <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <maven-site-plugin.version>3.4</maven-site-plugin.version>
+    <maven-source-plugin.version>2.4</maven-source-plugin.version>
+    <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
   </properties>
 
   <dependencies>
@@ -89,47 +125,87 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>${maven-site-plugin.version}</version>
-        <configuration>
-          <reportPlugins>
-            <!-- generates the maven plugin info page -->
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-plugin-plugin</artifactId>
-              <configuration>
-                <requirements>
-                  <maven>${maven.version}</maven>
-                  <jdk>${jdk.version}</jdk>
-                </requirements>
-              </configuration>
-            </plugin>
-          </reportPlugins>
-        </configuration>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>${coveralls-maven-plugin.version}</version>
+        <!--The Coveralls API token is made available as 'repoToken' env variable by Travis CI (see .travis.yml for secure-->
+        <!--env). If it weren't you could define it here and reference some property from your settings.xml.-->
+        <!--<configuration>-->
+        <!--<repoToken>${coveralls.trema-core.token}</repoToken>-->
+        <!--</configuration>-->
       </plugin>
-      
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <configuration>
+          <!--<excludes />-->
+        </configuration>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-site-plugin</artifactId>-->
+        <!--<version>${maven-site-plugin.version}</version>-->
+        <!--<configuration>-->
+          <!--<reportPlugins>-->
+            <!--&lt;!&ndash; generates the maven plugin info page &ndash;&gt;-->
+            <!--<plugin>-->
+              <!--<groupId>org.apache.maven.plugins</groupId>-->
+              <!--<artifactId>maven-plugin-plugin</artifactId>-->
+              <!--<configuration>-->
+                <!--<requirements>-->
+                  <!--<maven>${maven.version}</maven>-->
+                  <!--<jdk>${jdk.version}</jdk>-->
+                <!--</requirements>-->
+              <!--</configuration>-->
+            <!--</plugin>-->
+          <!--</reportPlugins>-->
+        <!--</configuration>-->
+      <!--</plugin>-->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
-          <configuration>
-            <encoding>UTF-8</encoding>
-            <source>${jdk.version}</source>
-            <target>${jdk.version}</target>
-          </configuration>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
+        </configuration>
       </plugin>
-      
+
       <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
-          <configuration>
-            <runOrder>random</runOrder>
-          </configuration>
-        </plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <runOrder>random</runOrder>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+          <!-- references the profile defined just below -->
+          <releaseProfiles>release</releaseProfiles>
+          <goals>deploy</goals>
+        </configuration>
+      </plugin>
     </plugins>
-  
+
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
@@ -150,7 +226,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore></ignore>
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -161,4 +237,64 @@
     </pluginManagement>
   </build>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.6</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <!-- all plugins below are usually only required for release builds -->
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven-source-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
