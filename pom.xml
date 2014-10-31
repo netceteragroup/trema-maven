@@ -3,7 +3,7 @@
 
   <groupId>com.netcetera.trema</groupId>
   <artifactId>trema-maven-plugin</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>${project.artifactId}</name>
   <description>Trema - Text resource management</description>
@@ -43,7 +43,7 @@
     <url>https://github.com/netceteragroup/trema-maven</url>
     <connection>scm:git:git@github.com:netceteragroup/trema-maven.git</connection>
     <developerConnection>scm:git:git@github.com:netceteragroup/trema-maven.git</developerConnection>
-    <tag>trema-maven-plugin-0.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
