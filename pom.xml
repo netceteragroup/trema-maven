@@ -40,7 +40,7 @@
   </developers>
 
   <scm>
-    <url>https://github.com/netceteragroup/trema-maven</url>
+    <url>${project.url}</url>
     <connection>scm:git:git@github.com:netceteragroup/trema-maven.git</connection>
     <developerConnection>scm:git:git@github.com:netceteragroup/trema-maven.git</developerConnection>
     <tag>HEAD</tag>
