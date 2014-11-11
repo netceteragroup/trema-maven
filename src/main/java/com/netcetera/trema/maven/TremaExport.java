@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.netcetera.trema.common.TremaUtil;
+import com.netcetera.trema.common.TremaCoreUtil;
 import com.netcetera.trema.core.ParseException;
 import com.netcetera.trema.core.Status;
 import com.netcetera.trema.core.XMLDatabase;
@@ -73,7 +73,7 @@ public class TremaExport {
     if (languages == null) {
       // the user did not specify the language option, so use all languages of
       // the database
-      Set<String> languageSet = TremaUtil.getLanguages(xmlDb.getTextNodes());
+      Set<String> languageSet = TremaCoreUtil.getLanguages(xmlDb.getTextNodes());
       languages = languageSet.toArray(new String[languageSet.size()]);
     }
 

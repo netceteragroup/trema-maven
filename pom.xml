@@ -77,7 +77,7 @@
     <!-- Dependencies -->
     <junit.version>4.11</junit.version>
     <mockito.version>1.10.8</mockito.version>
-    <trema-core.version>0.1.2</trema-core.version>
+    <trema-core.version>0.2.0-SNAPSHOT</trema-core.version>
     <maven-plugin-api.version>3.2.3</maven-plugin-api.version>
     <plexus-build-api.version>0.0.7</plexus-build-api.version>
 
