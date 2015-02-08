@@ -75,9 +75,9 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Dependencies -->
+    <trema-core.version>0.2.0-SNAPSHOT</trema-core.version>
     <junit.version>4.11</junit.version>
     <mockito.version>1.10.8</mockito.version>
-    <trema-core.version>0.2.0-SNAPSHOT</trema-core.version>
     <maven-plugin-api.version>3.2.3</maven-plugin-api.version>
     <plexus-build-api.version>0.0.7</plexus-build-api.version>
 
@@ -134,18 +134,18 @@
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>${coveralls-maven-plugin.version}</version>
-        <!--The Coveralls API token is made available as 'repoToken' env variable by Travis CI (see .travis.yml for secure-->
-        <!--env). If it weren't you could define it here and reference some property from your settings.xml.-->
-        <!--<configuration>-->
-        <!--<repoToken>${coveralls.trema-core.token}</repoToken>-->
-        <!--</configuration>-->
+        <!--The Coveralls API token is made available as 'repoToken' env variable by Travis CI (see .travis.yml for secure -->
+        <!--env). If it weren't you could define it here and reference some property from your settings.xml. -->
+        <!--<configuration> -->
+        <!--<repoToken>${coveralls.trema-core.token}</repoToken> -->
+        <!--</configuration> -->
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>${jacoco-maven-plugin.version}</version>
         <configuration>
-          <!--<excludes />-->
+          <!--<excludes /> -->
         </configuration>
         <executions>
           <execution>
@@ -162,7 +162,6 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <encoding>UTF-8</encoding>
           <source>${jdk.version}</source>
           <target>${jdk.version}</target>
         </configuration>
