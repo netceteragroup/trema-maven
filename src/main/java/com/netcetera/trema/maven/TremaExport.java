@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.maven.plugin.logging.Log;
+
 import com.netcetera.trema.common.TremaCoreUtil;
 import com.netcetera.trema.core.ParseException;
 import com.netcetera.trema.core.Status;
@@ -40,6 +42,7 @@ public class TremaExport {
   private TremaExportContext exportContext;
   private OutputStreamFactory outputStreamFactory = new FileOutputStreamFactory();
   private ExporterFactory exporterFactory;
+  private Log log;
 
 
   /**
@@ -47,14 +50,15 @@ public class TremaExport {
    *
    * @param exportContext the export context
    */
-  public TremaExport(TremaExportContext exportContext) {
-    type = exportContext.getType();
-    languages = exportContext.getLanguages();
-    status = exportContext.getStatus();
-    xmlPathName = exportContext.getXmlPathName();
-    baseName = exportContext.getBaseName();
+  public TremaExport(TremaExportContext exportContext, Log log) {
+    this.type = exportContext.getType();
+    this.languages = exportContext.getLanguages();
+    this.status = exportContext.getStatus();
+    this.xmlPathName = exportContext.getXmlPathName();
+    this.baseName = exportContext.getBaseName();
     this.exportContext = exportContext;
-    exporterFactory = new ExporterFactory();
+    this.exporterFactory = new ExporterFactory();
+    this.log = log;
   }
   // visibility for Testing
   void setExporterFactory(ExporterFactory exporterFactory) {
@@ -267,7 +271,7 @@ public class TremaExport {
     }
     boolean success = file.createNewFile();
     if (!success) {
-      print("File '" + file.getAbsolutePath() + "' existed already.");
+      log.debug("File '" + file.getAbsolutePath() + "' existed already.");
     }
     return file;
 
@@ -291,7 +295,7 @@ public class TremaExport {
    * @param msg the msg
    */
   protected void print(String msg) {
-    System.out.println(msg);
+    log.info(msg);
   }
 
 }

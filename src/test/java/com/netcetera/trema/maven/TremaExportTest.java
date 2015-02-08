@@ -3,6 +3,7 @@ package com.netcetera.trema.maven;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.BDDMockito;
@@ -71,7 +72,7 @@ public class TremaExportTest {
     context.setFilters(new String[]{TremaExportContext.FILTER_TYPE_MESSAGE_FORMAT,
         TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE});
 
-    tremaExport = new TremaExport(context);
+    tremaExport = new TremaExport(context, Mockito.mock(Log.class));
     tremaExport.setExporterFactory(factory);
 
 

@@ -91,12 +91,13 @@ public abstract class AbstractExportMojo extends AbstractMojo {
     String defaultlanguage = getDefaultlanguage();
     String[] filters = getFilters();
     Log log = getLog();
-    log.debug("trema file = " + tremaFile);
-    log.debug("basename = " + basename);
-    log.debug("languages = " + Arrays.toString(languages));
-    log.debug("defaultlanguage = " + defaultlanguage);
-    log.debug("states = " + Arrays.toString(states));
-    log.debug("filters = " + Arrays.toString(filters));
+    log.debug("Executing " + this.getClass().getSimpleName() + " with parameters: "
+        + "tremaFile = " + tremaFile
+        + ", basename = " + basename
+        + ", languages = " + Arrays.toString(languages)
+        + ", defaultlanguage = " + defaultlanguage
+        + ", states = " + Arrays.toString(states)
+        + ", filters = " + Arrays.toString(filters));
 
     // validate
     if (tremaFile == null || tremaFile.length() == 0) {
@@ -140,7 +141,7 @@ public abstract class AbstractExportMojo extends AbstractMojo {
     }
 
     // export the property files
-    final TremaExport exporter = new TremaExport(exportContext);
+    final TremaExport exporter = new TremaExport(exportContext, getLog());
 
     // buildContext not available in test cases
     if (buildContext != null) {

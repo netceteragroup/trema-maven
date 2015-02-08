@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+import org.apache.maven.plugin.logging.Log;
+
 import com.netcetera.trema.core.ParseException;
 import com.netcetera.trema.core.XMLDatabase;
 import com.netcetera.trema.core.api.IDatabase;
@@ -22,7 +24,7 @@ import com.netcetera.trema.core.importing.XLSFile;
  * Does an import into a trema database file.
  */
 public class TremaImport {
-  
+
   private String importFilePathName;
   private String databaseFilePathName;
   private boolean justAnalyze;
@@ -32,33 +34,34 @@ public class TremaImport {
   private String outputPathName;
   private String xmlEncoding;
   private String xmlLineSeparator;
+  private Log log;
 
-  
+
   /**
    * Constructor.
-   * 
+   *
    * @param importContext the context
    */
-  public TremaImport(TremaImportContext importContext) {
-    
-    importFilePathName = importContext.getImportFilePathName();
-    databaseFilePathName = importContext.getDatabaseFilePathName();
-    justAnalyze = importContext.isJustAnalyze();
-    doNotApplyConflictingChanges = importContext.isDoNotApplyConflictingChanges();
-    csvEncoding = importContext.getCsvEncoding();
-    csvSeparator = importContext.getCsvSeparator();
-    outputPathName = importContext.getOutputPathName();
-    xmlEncoding = importContext.getXmlEncoding();
-    xmlLineSeparator = importContext.getXmlLineSeparator();
+  public TremaImport(TremaImportContext importContext, Log log) {
+    this.importFilePathName = importContext.getImportFilePathName();
+    this.databaseFilePathName = importContext.getDatabaseFilePathName();
+    this.justAnalyze = importContext.isJustAnalyze();
+    this.doNotApplyConflictingChanges = importContext.isDoNotApplyConflictingChanges();
+    this.csvEncoding = importContext.getCsvEncoding();
+    this.csvSeparator = importContext.getCsvSeparator();
+    this.outputPathName = importContext.getOutputPathName();
+    this.xmlEncoding = importContext.getXmlEncoding();
+    this.xmlLineSeparator = importContext.getXmlLineSeparator();
+    this.log = log;
   }
-  
-  
+
+
   /**
    * Executes the import.
-   * 
+   *
    * @throws Exception in case the import failed
    */
-  public void execute() throws Exception {    
+  public void execute() throws Exception {
     IImportSource importFile = null;
     try {
       importFile = getImportSource(importFilePathName, csvEncoding, csvSeparator);
@@ -70,7 +73,7 @@ public class TremaImport {
     } catch (IOException e) {
       logAndThrow("Could not open import file file: " + e.getMessage());
     }
-    
+
     // open and internalize the XML file
     XMLDatabase xmlDb = new XMLDatabase();
     InputStream inputStream = null;
@@ -95,9 +98,9 @@ public class TremaImport {
         }
       }
     }
-    
+
     printSummary(importFile, importFilePathName, xmlDb, databaseFilePathName);
- 
+
     // analyze the changes
     ChangesAnalyzer analyzer = null;
     try {
@@ -105,21 +108,21 @@ public class TremaImport {
     } catch (IllegalArgumentException e) {
       logAndThrow(e.getMessage());
     }
-    
+
     analyzer.analyze();
     Change[] conflictingChanges = analyzer.getConflictingChanges();
     Change[] nonConflictingChanges = analyzer.getNonConflictingChanges();
-    
+
     print("Conflicting changes: " + conflictingChanges.length);
     print("Non-conflicting changes: " + nonConflictingChanges.length);
-    
+
     if (conflictingChanges.length > 0) {
       print("Summary of conflicting changes:");
       for (int i = 0; i < conflictingChanges.length; i++) {
         printChange(conflictingChanges[i]);
       }
     }
-    
+
     if (!justAnalyze) {
       // apply the changes
       print("Applying non-conflicting changes...");
@@ -127,7 +130,7 @@ public class TremaImport {
         ChangesAnalyzer.applyChange(xmlDb, nonConflictingChanges[i]);
       }
       print("done.");
-      
+
       if (!doNotApplyConflictingChanges) {
         print("Applying conflicting changes...");
         for (int i = 0; i < conflictingChanges.length; i++) {
@@ -135,7 +138,7 @@ public class TremaImport {
         }
         print("done.");
       }
-      
+
       print("Writing file " + outputPathName + "...");
       OutputStream outputStream = null;
       try {
@@ -145,7 +148,10 @@ public class TremaImport {
         if (parent != null && !parent.exists() && !parent.mkdirs()) {
           logAndThrow("\nCould not create directory: " + parent.getAbsolutePath());
         }
-        outFile.createNewFile();
+        boolean didNotExist = outFile.createNewFile();
+        if (!didNotExist) {
+          log.debug("File '" + outFile.getAbsolutePath() + "' existed already.");
+        }
         outputStream = new FileOutputStream(outFile);
         xmlDb.writeXML(outputStream, xmlEncoding, "  ", xmlLineSeparator);
         print("done.");
@@ -162,33 +168,33 @@ public class TremaImport {
       }
     }
   }
-  
+
   /**
    * Prints a message.
-   * 
+   *
    * @param msg the message
    */
   protected void print(String msg) {
-    System.out.println(msg);
+    log.info(msg);
   }
-  
+
   /**
    * Logs a message and throws an exception.
-   * 
+   *
    * @param msg the msg
    * @throws Exception the Exception
    */
   protected void logAndThrow(String msg) throws Exception {
     throw new Exception(msg);
   }
-  
+
   /**
    * Prints a summary of a change to a given <code>PrintStream</code>.
    * @param change the change
    */
   protected void printChange(Change change) {
     print("Key: " + change.getKey());
-    switch(change.getType()) {
+    switch (change.getType()) {
       case Change.TYPE_MASTER_VALUE_CHANGED:
         print("The master value has changed from '" + change.getDbMasterValue()
                             + "' to '" + change.getImportedMasterValue() + "'.");
@@ -223,7 +229,7 @@ public class TremaImport {
       default:
         print("Unknown change.");
     }
-    
+
     if (change.isConflicting()) {
       if (change.isAccept()) {
         print("--> Values to be applied: ");
@@ -235,7 +241,7 @@ public class TremaImport {
       }
     }
   }
-  
+
   /**
    * Prints a short summary of a trema CSV file and a trema XML
    * database to a given <code>PrintWriter</code>.
@@ -248,26 +254,26 @@ public class TremaImport {
     print("Number of records: " + csvFile.getSize());
     print(", master language: " + csvFile.getMasterLanguage());
     print(", language: " + csvFile.getLanguage());
-    
+
     print("");
     print("Database file: " + xmlPathname);
     print("Number of records: " + xmlDB.getSize());
     print(", master language: " + xmlDB.getMasterLanguage());
   }
-  
+
   /**
-   * Gets an IImportSource. 
-   * If the filename ends with .xls an XLSFile instance will be created, otherwise a CSVFile instance. 
+   * Gets an IImportSource.
+   * If the filename ends with .xls an XLSFile instance will be created, otherwise a CSVFile instance.
    *
-   * @param fileName the filename 
+   * @param fileName the filename
    * @param csvEncoding the csv encoding (only needed for csv files)
    * @param csvSeparator the csv separator (only needed for csv files)
    * @return an instance of IImportSource
    * @throws IllegalArgumentException in case the filename is null
    * @throws ParseException in case the file cannot be parsed
-   * @throws IOException in case the file cannot be opened/read 
+   * @throws IOException in case the file cannot be opened/read
    */
-  private static IImportSource getImportSource(String fileName,  String csvEncoding, char csvSeparator) 
+  private static IImportSource getImportSource(String fileName,  String csvEncoding, char csvSeparator)
   throws IllegalArgumentException, ParseException, IOException {
     if (fileName == null) {
       throw new IllegalArgumentException("filename must not be null");
@@ -278,6 +284,6 @@ public class TremaImport {
       return new CSVFile(fileName, csvEncoding, csvSeparator);
     }
   }
-  
+
 }
 
