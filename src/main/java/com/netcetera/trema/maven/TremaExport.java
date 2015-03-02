@@ -104,6 +104,7 @@ public class TremaExport {
     }
   }
   private XMLDatabase parseTremaXmlFile() throws Exception {
+    log.debug("Parsing Trema File...");
     XMLDatabase xmlDb = new XMLDatabase();
     InputStream inputStream = null;
     try {
@@ -128,6 +129,7 @@ public class TremaExport {
         }
       }
     }
+    log.debug("Parsing Trema File done.");
     return xmlDb;
   }
 
@@ -151,10 +153,10 @@ public class TremaExport {
         throw new IllegalArgumentException("no filename defined for language:" + language);
       }
       AndroidExporter exporter = new AndroidExporter(getNewFile(fileName), outputStreamFactory);
-      print("Writing strings.xml file " + fileName + "...");
+      logBeforeFileWrite(fileName, language);
       exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), languages[i], status);
-      print("done.");
     }
+    logAfterFileWrites();
   }
 
 
@@ -164,45 +166,41 @@ public class TremaExport {
       PropertiesExporter exporter = new PropertiesExporter(getNewFile(fileName),
           outputStreamFactory);
       exporter.setExportFilter(exportContext.getFilters());
-      print("Writing properties file " + fileName + "...");
+      logBeforeFileWrite(fileName, languages[i]);
       exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), languages[i], status);
-      print("done.");
     }
     // export default properties file (without language suffix)
-    if (exportContext.getDefaultLanguage() != null) {
+    String defaultLanguage = exportContext.getDefaultLanguage();
+    if (defaultLanguage != null) {
       String fileName = baseName + ".properties";
       PropertiesExporter exporter = new PropertiesExporter(getNewFile(fileName),
           outputStreamFactory);
       exporter.setExportFilter(exportContext.getFilters());
-      print("Writing default properties file (" + exportContext.getDefaultLanguage() + ") "
-          + fileName + "...");
-      exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(),
-          exportContext.getDefaultLanguage(), status);
-      print("done.");
+      logBeforeFileWrite(fileName, defaultLanguage);
+      exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), defaultLanguage, status);
     }
+    logAfterFileWrites();
   }
-
-
   private void exportAsXls(XMLDatabase xmlDb) throws Exception {
     for (int i = 0; i < languages.length; i++) {
       String fileName = baseName + "_" + languages[i] + ".xls";
-      print("Writing XLS file " + fileName + "...");
+      logBeforeFileWrite(fileName, languages[i]);
       try {
         XLSExporter exporter = new XLSExporter(getNewFile(fileName));
         exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), languages[i], status);
-        print("done.");
       } catch (IOException e) {
         logAndThrow("\nCould not write output: " + e.getMessage());
       } catch (ExportException e) {
         logAndThrow("\nCould not export trema database: " + e.getMessage());
       }
     }
+    logAfterFileWrites();
   }
 
   private void exportAsCsv(XMLDatabase xmlDb) throws Exception {
     for (int i = 0; i < languages.length; i++) {
       String fileName = baseName + "_" + languages[i] + ".csv";
-      print("Writing CSV file " + fileName + "...");
+      logBeforeFileWrite(fileName, languages[i]);
 
       Writer writer = null;
       try {
@@ -211,7 +209,6 @@ public class TremaExport {
         TremaCSVPrinter printer = new TremaCSVPrinter(writer, exportContext.getCsvSeparator());
         CSVExporter exporter = new CSVExporter(printer);
         exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), languages[i], status);
-        print("done.");
       } catch (UnsupportedEncodingException e) {
         logAndThrow("\n" + e.getMessage() + " is an unsupported encoding.");
       } catch (IOException e) {
@@ -226,6 +223,7 @@ public class TremaExport {
         }
       }
     }
+    logAfterFileWrites();
   }
 
   /**
@@ -242,29 +240,27 @@ public class TremaExport {
           (JsonExporter) exporterFactory.getExporter(ExportType.JSON, getNewFile(fileName),
           outputStreamFactory, exportContext);
       exporter.setExportFilter(exportContext.getFilters());
-      print("Writing json file " + fileName + "...");
+      logBeforeFileWrite(fileName, languages[i]);
       exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), languages[i], status);
-      print("done.");
     }
     // export default properties file (without language suffix)
-    if (exportContext.getDefaultLanguage() != null) {
+    String defaultLanguage = exportContext.getDefaultLanguage();
+    if (defaultLanguage != null) {
       String fileName = baseName + ".json";
       JsonExporter exporter =
           (JsonExporter) exporterFactory.getExporter(ExportType.JSON, getNewFile(fileName),
           outputStreamFactory, exportContext);
       exporter.setExportFilter(exportContext.getFilters());
-      print("Writing default JSON file (" + exportContext.getDefaultLanguage() + ") "
-          + fileName + "...");
-      exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(),
-          exportContext.getDefaultLanguage(), status);
-      print("done.");
+      logBeforeFileWrite(fileName, defaultLanguage);
+      exporter.export(xmlDb.getTextNodes(), xmlDb.getMasterLanguage(), defaultLanguage, status);
     }
+    logAfterFileWrites();
   }
 
   private File getNewFile(String fileName) throws IOException {
     // possibly create the file
     File file = new File(fileName);
-    print(file.getAbsolutePath());
+    log.debug("Created new file: " + file.getAbsolutePath());
     File parent = file.getParentFile();
     if (parent != null && !parent.exists() && !parent.mkdirs()) {
       throw new IOException("\nCould not create directory: " + parent.getAbsolutePath());
@@ -279,6 +275,12 @@ public class TremaExport {
 
   public void setOutputStreamFactory(OutputStreamFactory outputStreamFactory) {
     this.outputStreamFactory = outputStreamFactory;
+  }
+  private void logBeforeFileWrite(String fileName, String language) {
+    print("Writing " + type + " file for language " + language + " to: " + fileName);
+  }
+  private void logAfterFileWrites() {
+    print("Finished writing all " + type + " files.");
   }
   /**
    * Logs a msg and throws an Exception containing the msg.
