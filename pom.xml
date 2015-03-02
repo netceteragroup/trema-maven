@@ -75,7 +75,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Dependencies -->
-    <trema-core.version>0.3.0-SNAPSHOT</trema-core.version>
+    <trema-core.version>0.3.0</trema-core.version>
     <junit.version>4.11</junit.version>
     <mockito.version>1.10.8</mockito.version>
     <maven-plugin-api.version>3.2.3</maven-plugin-api.version>
