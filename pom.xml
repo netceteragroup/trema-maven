@@ -76,25 +76,25 @@
 
     <!-- Dependencies -->
     <trema-core.version>0.3.0</trema-core.version>
-    <junit.version>4.11</junit.version>
-    <mockito.version>1.10.8</mockito.version>
-    <maven-plugin-api.version>3.2.3</maven-plugin-api.version>
+    <junit.version>4.13.1</junit.version>
+    <mockito.version>1.10.19</mockito.version>
+    <maven-plugin-api.version>3.6.3</maven-plugin-api.version>
     <plexus-build-api.version>0.0.7</plexus-build-api.version>
 
     <!-- Plugins -->
-    <coveralls-maven-plugin.version>3.0.1</coveralls-maven-plugin.version>
-    <jacoco-maven-plugin.version>0.7.2.201409121644</jacoco-maven-plugin.version>
-    <maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
-    <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
-    <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
-    <maven-plugin-plugin.version>3.3</maven-plugin-plugin.version>
-    <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
-    <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+    <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+    <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+    <maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
+    <maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-    <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
-    <maven-site-plugin.version>3.4</maven-site-plugin.version>
-    <maven-source-plugin.version>2.4</maven-source-plugin.version>
-    <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+    <maven-scm-publish-plugin.version>3.0.0</maven-scm-publish-plugin.version>
+    <maven-site-plugin.version>3.9.1</maven-site-plugin.version>
+    <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
   </properties>
 
   <dependencies>
