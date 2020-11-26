@@ -76,8 +76,9 @@
 
     <!-- Dependencies -->
     <trema-core.version>0.3.0</trema-core.version>
-    <junit.version>4.13.1</junit.version>
-    <mockito.version>1.10.19</mockito.version>
+    <hamcrest.version>2.2</hamcrest.version>
+    <junit.version>5.7.0</junit.version>
+    <mockito.version>3.6.28</mockito.version>
     <maven-plugin-api.version>3.6.3</maven-plugin-api.version>
     <plexus-build-api.version>0.0.7</plexus-build-api.version>
 
@@ -116,15 +117,21 @@
 
     <!-- Test Dependencies -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
+      <artifactId>mockito-core</artifactId>
       <version>${mockito.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>${hamcrest.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

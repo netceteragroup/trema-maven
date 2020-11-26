@@ -1,15 +1,5 @@
 package com.netcetera.trema.maven;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.maven.plugin.logging.Log;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.BDDMockito;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-
 import com.netcetera.trema.core.Status;
 import com.netcetera.trema.core.XMLDatabase;
 import com.netcetera.trema.core.api.IExportFilter;
@@ -17,11 +7,26 @@ import com.netcetera.trema.core.api.ITextNode;
 import com.netcetera.trema.core.exporting.ExportException;
 import com.netcetera.trema.core.exporting.JsonExporter;
 import com.netcetera.trema.core.exporting.OutputStreamFactory;
+import org.apache.maven.plugin.logging.Log;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.io.File;
+import java.io.IOException;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
- * Test for TremaExport.
+ * Test for {@link TremaExport}.
  */
-public class TremaExportTest {
+class TremaExportTest {
+
   private XMLDatabase db;
   private ExporterFactory factory;
 
@@ -29,14 +34,8 @@ public class TremaExportTest {
   private TremaExportContext context;
   private JsonExporter exporter;
 
-
-  /**
-   * setUp().
-   *
-   * @throws Exception in case setUp fails
-   */
-  @Before
-  public void setUp() throws Exception {
+  @BeforeEach
+  void setUp() throws Exception {
     db = new XMLDatabase();
     db.build(
         "<?xml version='1.0' encoding='UTF-8'?><trema masterLang='de'>"
@@ -74,46 +73,42 @@ public class TremaExportTest {
 
     tremaExport = new TremaExport(context, Mockito.mock(Log.class));
     tremaExport.setExporterFactory(factory);
-
-
-
-
   }
 
   @Test
-  public void generateLanguageJsonWithoutDefaultLanguage() throws IOException, ExportException {
+  void generateLanguageJsonWithoutDefaultLanguage() throws IOException, ExportException {
     ITextNode[] nodes = db.getTextNodes();
 
-    BDDMockito.given(factory.getExporter(Matchers.eq(ExportType.JSON), Matchers.any(File.class),
-        Matchers.any(OutputStreamFactory.class), Matchers.eq(context))).willReturn(exporter);
+    given(factory.getExporter(eq(ExportType.JSON), any(File.class),
+        any(OutputStreamFactory.class), eq(context))).willReturn(exporter);
 
     tremaExport.exportAsJson(db);
 
-    Mockito.verify(factory, Mockito.times(2)).getExporter(Matchers.eq(ExportType.JSON), Matchers.any(File.class),
-        Matchers.any(OutputStreamFactory.class), Matchers.eq(context));
-    Mockito.verify(exporter, Mockito.times(2)).setExportFilter(Mockito.any(IExportFilter[].class));
-    Mockito.verify(exporter).export(nodes, db.getMasterLanguage(), "en", new Status[]{Status.INITIAL});
-    Mockito.verify(exporter).export(nodes, db.getMasterLanguage(), "de", new Status[]{Status.INITIAL});
-    Mockito.verifyNoMoreInteractions(factory, exporter);
+    verify(factory, times(2)).getExporter(eq(ExportType.JSON), any(File.class),
+        any(OutputStreamFactory.class), eq(context));
+    verify(exporter, times(2)).setExportFilter(any(IExportFilter[].class));
+    verify(exporter).export(nodes, db.getMasterLanguage(), "en", new Status[]{Status.INITIAL});
+    verify(exporter).export(nodes, db.getMasterLanguage(), "de", new Status[]{Status.INITIAL});
+    verifyNoMoreInteractions(factory, exporter);
   }
 
   @Test
-  public void generateLanguageJsonWithDefaultLanguage() throws IOException, ExportException {
+  void generateLanguageJsonWithDefaultLanguage() throws IOException, ExportException {
     ITextNode[] nodes = db.getTextNodes();
     context.setDefaultLanguage("en");
 
-    BDDMockito.given(factory.getExporter(Matchers.eq(ExportType.JSON),
-        Matchers.any(File.class), Matchers.any(OutputStreamFactory.class), Matchers.eq(context))).willReturn(exporter);
+    given(factory.getExporter(eq(ExportType.JSON),
+        any(File.class), any(OutputStreamFactory.class), eq(context))).willReturn(exporter);
 
     tremaExport.exportAsJson(db);
 
-    Mockito.verify(factory, Mockito.times(3)).getExporter(
-        Matchers.eq(ExportType.JSON), Matchers.any(File.class), Matchers.any(OutputStreamFactory.class),
-        Matchers.eq(context));
-    Mockito.verify(exporter, Mockito.times(3)).setExportFilter(Mockito.any(IExportFilter[].class));
-    Mockito.verify(exporter, Mockito.times(2)).export(
+    verify(factory, times(3)).getExporter(
+        eq(ExportType.JSON), any(File.class), any(OutputStreamFactory.class),
+        eq(context));
+    verify(exporter, times(3)).setExportFilter(any(IExportFilter[].class));
+    verify(exporter, times(2)).export(
         nodes, db.getMasterLanguage(), "en", new Status[]{Status.INITIAL});
-    Mockito.verify(exporter).export(nodes, db.getMasterLanguage(), "de", new Status[]{Status.INITIAL});
-    Mockito.verifyNoMoreInteractions(factory, exporter);
+    verify(exporter).export(nodes, db.getMasterLanguage(), "de", new Status[]{Status.INITIAL});
+    verifyNoMoreInteractions(factory, exporter);
   }
 }

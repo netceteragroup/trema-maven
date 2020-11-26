@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class ExportMojoTestUtils {
@@ -34,9 +34,7 @@ public class ExportMojoTestUtils {
     executeAbstractExportMojo(languages, states, mojo);
   }
 
-  private void executeAbstractExportMojo(String[] languages,
-      String[] states,
-      final AbstractExportMojo mojo) {
+  private void executeAbstractExportMojo(String[] languages, String[] states, AbstractExportMojo mojo) {
     try {
       cleanupExistingPropertiesFiles(languages);
 

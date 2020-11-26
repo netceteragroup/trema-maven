@@ -1,19 +1,23 @@
 package com.netcetera.trema.maven;
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.junit.Assert;
-import org.junit.Test;
+import static com.netcetera.trema.maven.TestUtils.isExistingFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test for {@link ExportAndroidMojo}.
  */
-public class ExportAndroidMojoTest {
+class ExportAndroidMojoTest {
 
   /**
-   * Trema file location used in all test cases where valid trema file is
-   * required.
+   * Trema file location used in all test cases where valid trema file is required.
    */
   private static final String TREMA_FILE = "src/test/resources/text.trm";
 
@@ -22,15 +26,9 @@ public class ExportAndroidMojoTest {
    */
   private static final String EXPORT_PATH = "target/res/";
 
-  /**
-   * Test method for
-   * {@link com.netcetera.trema.maven.ExportAndroidMojo#execute()}.
-   *
-   * @throws Exception if the test failed
-   */
   @Test
-  public void testExecute() throws Exception {
-
+  void shouldExecuteSuccessfully() throws Exception {
+    // given
     String file1 = EXPORT_PATH + "values-de/strings.xml";
     String file2 = EXPORT_PATH + "values-en/strings.xml";
     String file3 = EXPORT_PATH + "values-fr/strings.xml";
@@ -44,71 +42,73 @@ public class ExportAndroidMojoTest {
     mojo.setTremaFile(TREMA_FILE);
     mojo.setExportPath(EXPORT_PATH);
     mojo.setLanguages(new String[]{"en", "de", "fr"});
-
     mojo.setStates(new String[]{"verified"});
+
+    // when
     mojo.execute();
 
+    // then
     // make sure the files where written
-    Assert.assertTrue(new File(file1).exists());
-    Assert.assertTrue(new File(file2).exists());
-    Assert.assertTrue(new File(file3).exists());
+    assertThat(new File(file1), isExistingFile());
+    assertThat(new File(file2), isExistingFile());
+    assertThat(new File(file3), isExistingFile());
   }
 
-  /**
-   * Test with no trema file specification.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNoTremaFile() throws Exception {
+  @Test
+  void shouldThrowForMissingTremaFile() {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setExportPath("target/classes/test");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    // when
+    MojoExecutionException ex = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    assertThat(ex.getMessage(), equalTo("tremaFile must not be empty"));
   }
 
-  /**
-   * Test with an non-existent trema file.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNonExistentTremaFile() throws Exception {
+  @Test
+  void shouldThrowForNonExistentFile() {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile("src/test/resources/text-nonesistent.trm");
     mojo.setExportPath("target/classes/test");
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    // when / then
+    assertThrows(MojoExecutionException.class, mojo::execute);
   }
 
-  /**
-   * Test with no EXPORT_PATH.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNoExportPath() throws Exception {
+  @Test
+  void shouldThrowForMissingBasename() {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    // when
+    MojoExecutionException ex = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    assertThat(ex.getMessage(), equalTo("basename must not be empty"));
   }
 
-  /**
-   * Test with no languages.
-   *
-   * @throws Exception if the test failed
-   */
   @Test
-  public void testNoLanguages() throws Exception {
+  void shouldPerformExportWithNullLanguageSet() throws Exception {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setExportPath("target/classes/test");
     mojo.setStates(new String[]{"verified"});
+
+    // when
     mojo.execute();
+
+    // then - no exception
   }
 
   /**
@@ -117,37 +117,38 @@ public class ExportAndroidMojoTest {
    * @throws Exception if the test failed
    */
   @Test
-  public void testEmptyLanguages() throws Exception {
+  void shouldPerformExportWithEmptyLanguageSet() throws Exception {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setExportPath("target/classes/test");
     mojo.setLanguages(new String[]{});
     mojo.setStates(new String[]{"verified"});
+
+    // when
     mojo.execute();
+
+    // then - no exception
   }
 
-  /**
-   * Test with invalid language configuration.
-   *
-   * @throws Exception if the test failed
-   */
   @Test
-  public void testInvalidLanguages() throws Exception {
+  void shouldExecuteWithUnknownLanguage() throws Exception {
+    // given
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setExportPath("target/classes/test");
     mojo.setLanguages(new String[]{"foo"});
     mojo.setStates(new String[]{"verified"});
+
+    // when
     mojo.execute();
+
+    // then - no exception
   }
 
-  /**
-   * Test using a non-existing export filter.
-   *
-   * @throws Exception if the test failed
-   */
   @Test
-  public void testDefaultLanguage() throws Exception {
+  void shouldExportWithDefaultLanguage() throws Exception {
+    // given
     String file1 = EXPORT_PATH + "values/strings.xml";
     String file2 = EXPORT_PATH + "values-de/strings.xml";
     String file3 = EXPORT_PATH + "values-en/strings.xml";
@@ -157,16 +158,17 @@ public class ExportAndroidMojoTest {
     new File(file2).delete();
     new File(file3).delete();
 
+    // when
     final ExportAndroidMojo mojo = new ExportAndroidMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setExportPath(EXPORT_PATH);
     mojo.setDefaultlanguage("en");
     mojo.execute();
 
+    // then
     // make sure the files where written
-    Assert.assertTrue(new File(file1).exists());
-    Assert.assertTrue(new File(file2).exists());
-    Assert.assertFalse(new File(file3).exists());
+    assertThat(new File(file1), isExistingFile());
+    assertThat(new File(file2), isExistingFile());
+    assertThat(new File(file3), not(isExistingFile()));
   }
-
 }

@@ -1,73 +1,90 @@
 package com.netcetera.trema.maven;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.netcetera.trema.core.api.IExportFilter;
 import com.netcetera.trema.core.exporting.AddKeyToValueExportFilter;
 import com.netcetera.trema.core.exporting.HtmlLineBreakConverter;
 import com.netcetera.trema.core.exporting.MessageFormatEscapingFilter;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.arrayWithSize;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Test class.
+ * Test for {@link TremaExportContext}.
  */
-public class TremaExportContextTest {
+class TremaExportContextTest {
 
-  private TremaExportContext context;
-  @Before
-  public void setup() {
-    context = new TremaExportContext();
-  }
+  private TremaExportContext context = new TremaExportContext();
+
   @Test
-  public void shouldNotSetFiltersForNullArgument() {
-    Assert.assertNull(context.getFilters());
-
+  void shouldNotSetFiltersForNullArgument() {
+    // given / when
+    IExportFilter[] initialFilters = context.getFilters();
     context.setFilters(null);
 
-    Assert.assertNull(context.getFilters());
+    // then
+    assertThat(initialFilters, nullValue());
+    assertThat(context.getFilters(), nullValue());
   }
+
   @Test
-  public void shouldAddMessageEscapingFilter() {
+  void shouldAddMessageEscapingFilter() {
+    // given / when
     context.setFilters(new String[]{TremaExportContext.FILTER_TYPE_MESSAGE_FORMAT});
 
+    // then
     IExportFilter[] filters = context.getFilters();
-
-    Assert.assertEquals(1, filters.length);
-    Assert.assertTrue(filters[0] instanceof MessageFormatEscapingFilter);
+    assertThat(filters, arrayWithSize(1));
+    assertThat(filters[0], instanceOf(MessageFormatEscapingFilter.class));
   }
 
   @Test
-  public void shouldAddKeyToValueFilter() {
+  void shouldAddKeyToValueFilter() {
+    // given / when
     context.setFilters(new String[]{TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE});
 
+    // then
     IExportFilter[] filters = context.getFilters();
-
-    Assert.assertEquals(1, filters.length);
-    Assert.assertTrue(filters[0] instanceof AddKeyToValueExportFilter);
+    assertThat(filters, arrayWithSize(1));
+    assertThat(filters[0], instanceOf(AddKeyToValueExportFilter.class));
   }
 
   @Test
-  public void shouldAddHtmlLineBreakFilter() {
+  void shouldAddHtmlLineBreakFilter() {
+    // given / when
     context.setFilters(new String[]{TremaExportContext.FILTER_TYPE_REPLACE_WITH_HTML_NEWLINE});
 
+    // then
     IExportFilter[] filters = context.getFilters();
+    assertThat(filters, arrayWithSize(1));
+    assertThat(filters[0], instanceOf(HtmlLineBreakConverter.class));
+  }
 
-    Assert.assertEquals(1, filters.length);
-    Assert.assertTrue(filters[0] instanceof HtmlLineBreakConverter);
-  }
-  @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowExceptionOnArbitraryString() {
-    context.setFilters(new String[]{"blah"});
-  }
   @Test
-  public void numberOfFiltersShouldMatchNumberOfArguments() {
-    context.setFilters(new String[]{TremaExportContext.FILTER_TYPE_REPLACE_WITH_HTML_NEWLINE,
-        TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE,
-        TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE});
+  void shouldThrowExceptionOnArbitraryString() {
+    // given / when
+    IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> context.setFilters(new String[]{"blah"}));
 
-    IExportFilter[] filters = context.getFilters();
+    // then
+    assertThat(ex.getMessage(), equalTo("Invalid filter: blah"));
+  }
 
-    Assert.assertEquals(3, filters.length);
+  @Test
+  void shouldAddMultipleFilters() {
+    // given
+    String[] filterNames = {
+      TremaExportContext.FILTER_TYPE_REPLACE_WITH_HTML_NEWLINE,
+      TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE,
+      TremaExportContext.FILTER_TYPE_ADD_KEY_TO_VALUE};
+
+    // when
+    context.setFilters(filterNames);
+
+    // then
+    assertThat(context.getFilters(), arrayWithSize(3));
   }
 }

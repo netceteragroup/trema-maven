@@ -1,20 +1,23 @@
 package com.netcetera.trema.maven;
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.junit.Assert;
-import org.junit.Test;
-
 import static com.netcetera.trema.maven.ExportMojoTestUtils.BASENAME;
 import static com.netcetera.trema.maven.ExportMojoTestUtils.TREMA_FILE;
+import static com.netcetera.trema.maven.TestUtils.isExistingFile;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit test for the property file export mojo ({@link ExportPropertiesMojo}).
  */
-public class ExportPropertiesMojoTest {
+class ExportPropertiesMojoTest {
 
   private static final String PROPERTIES_EXTENSION = ".properties";
 
@@ -22,73 +25,73 @@ public class ExportPropertiesMojoTest {
 
   /**
    * Test method for {@link com.netcetera.trema.maven.ExportPropertiesMojo#execute()}.
-   *
-   * @throws Exception if the test failed
    */
   @Test
-  public void testExecute() throws Exception {
+  void shouldExecuteSuccessfully() {
+    // given / when
     exportMojoTestUtils.executeExportPropertiesMojo(new String[]{"en", "de", "fr"}, new String[]{"verified"});
 
+    // then
     // make sure the files where written
-    Assert.assertTrue(new File("target/classes/test_de.properties").exists());
-    Assert.assertTrue(new File("target/classes/test_en.properties").exists());
-    Assert.assertTrue(new File("target/classes/test_fr.properties").exists());
+    assertThat(new File("target/classes/test_de.properties"), isExistingFile());
+    assertThat(new File("target/classes/test_en.properties"), isExistingFile());
+    assertThat(new File("target/classes/test_fr.properties"), isExistingFile());
   }
 
   @Test
-  public void executeExportPropertiesMojoReturnsReadableResourceBundle() {
+  void executeExportPropertiesMojoReturnsReadableResourceBundle() {
     exportMojoTestUtils.executeExportPropertiesMojo(new String[]{"de", "en"}, new String[]{"verified", "translated"});
 
     ResourceBundle bundle = ResourceBundle.getBundle("test", Locale.GERMANY);
-    Assert.assertEquals("Test (de)", bundle.getString("test.simple"));
-    Assert.assertEquals("ÄöÜ[@", bundle.getString("test.umlaute"));
+    assertThat(bundle.getString("test.simple"), equalTo("Test (de)"));
+    assertThat(bundle.getString("test.umlaute"), equalTo("ÄöÜ[@"));
 
-     bundle = ResourceBundle.getBundle("test", Locale.ENGLISH);
-    Assert.assertEquals("Test (en)", bundle.getString("test.simple"));
-    Assert.assertEquals("ÀÉÈÔô", bundle.getString("test.umlaute"));
+    bundle = ResourceBundle.getBundle("test", Locale.ENGLISH);
+    assertThat(bundle.getString("test.simple"), equalTo("Test (en)"));
+    assertThat(bundle.getString("test.umlaute"), equalTo("ÀÉÈÔô"));
   }
 
   /**
    * Test with no trema file specification.
-   *
-   * @throws Exception if the test failed
    */
-  @Test(expected = MojoExecutionException.class)
-  public void testNoTremaFile() throws Exception {
+  @Test
+  void shouldThrowForMissingTremaFile() {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setBasename(BASENAME);
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    MojoExecutionException ex = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    assertThat(ex.getMessage(), equalTo("tremaFile must not be empty"));
   }
 
-  /**
-   * Test with an non-existent trema file.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNonExistentTremaFile() throws Exception {
+  @Test
+  void shouldThrowForNonExistentTremaFile() {
+    // given
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
-    mojo.setTremaFile("src/test/resources/text-nonesistent.trm");
+    mojo.setTremaFile("src/test/resources/text-nonexistent.trm");
     mojo.setBasename(BASENAME);
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    // when / then
+    assertThrows(MojoExecutionException.class, mojo::execute);
   }
 
-  /**
-   * Test with no basename.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNoBasename() throws Exception {
+  @Test
+  void shouldThrowForMissingBaseName() {
+    // given
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setLanguages(new String[]{"en", "de", "fr"});
     mojo.setStates(new String[]{"verified"});
-    mojo.execute();
+
+    // when
+    MojoExecutionException ex = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    assertThat(ex.getMessage(), equalTo("basename must not be empty"));
   }
 
   /**
@@ -97,7 +100,7 @@ public class ExportPropertiesMojoTest {
    * @throws Exception if the test failed
    */
   @Test
-  public void testNoLanguages() throws Exception {
+  void testNoLanguages() throws Exception {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
@@ -111,7 +114,7 @@ public class ExportPropertiesMojoTest {
    * @throws Exception if the test failed
    */
   @Test
-  public void testEmptyLanguages() throws Exception {
+  void testEmptyLanguages() throws Exception {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
@@ -126,7 +129,7 @@ public class ExportPropertiesMojoTest {
    * @throws Exception if the test failed
    */
   @Test
-  public void testInvalidLanguages() throws Exception {
+  void testInvalidLanguages() throws Exception {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
@@ -141,7 +144,7 @@ public class ExportPropertiesMojoTest {
    * @throws Exception if the test failed
    */
   @Test
-  public void testMessageFormatFilter() throws Exception {
+  void testMessageFormatFilter() throws Exception {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
@@ -151,29 +154,25 @@ public class ExportPropertiesMojoTest {
     mojo.execute();
   }
 
-  /**
-   * Test using a non-existing export filter.
-   *
-   * @throws Exception if the test failed
-   */
-  @Test(expected = MojoExecutionException.class)
-  public void testNonExistingFilter() throws Exception {
+  @Test
+  void shouldThrowForUnknownFilter() {
+    // given
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
     mojo.setLanguages(new String[]{"foo"});
     mojo.setStates(new String[]{"verified"});
     mojo.setFilters(new String[]{"doesntexist"});
-    mojo.execute();
+
+    // when
+    MojoExecutionException ex = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    assertThat(ex.getMessage(), equalTo("Invalid Filter arguments: Invalid filter: doesntexist"));
   }
 
-  /**
-   * Test using a non-existing export filter.
-   *
-   * @throws Exception if the test failed
-   */
   @Test
-  public void testDefaultLanguage() throws Exception {
+  void testDefaultLanguage() throws Exception {
     final ExportPropertiesMojo mojo = new ExportPropertiesMojo();
     mojo.setTremaFile(TREMA_FILE);
     mojo.setBasename(BASENAME);
@@ -181,7 +180,4 @@ public class ExportPropertiesMojoTest {
     mojo.setDefaultlanguage("de");
     mojo.execute();
   }
-
-
-
 }
