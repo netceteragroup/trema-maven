@@ -22,7 +22,7 @@ Export to Android consumable XML files
 </resources>
 +-----+
 
-  For more information about the android resources file format see {{http://developer.android.com/guide/topics/resources/string-resource.html}}
+  For more information about the android resources file format see {{https://developer.android.com/guide/topics/resources/string-resource.html}}
 
   <<Important>>
 

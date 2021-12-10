@@ -56,7 +56,7 @@ Using filters
   
 * 'MessageFormat' filter
 
-  When properties are consumed using the {{{http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html}MessageFormat}} class, it is necessary
+  When properties are consumed using the {{{https://docs.oracle.com/javase/8/docs/api/java/text/MessageFormat.html}MessageFormat}} class, it is necessary
   to apply a special escaping for single quotes within text values: Within a String, a doubled single quote('') represents a single single quote. 
   
   This means that in a properties file each single quote needs to be doubled in order to be displayed correctly in the application. This is exactly what the <<messageformat>> filter does:

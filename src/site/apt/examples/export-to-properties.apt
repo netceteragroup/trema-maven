@@ -10,7 +10,7 @@ Export to Java properties
 
   The {{{../exportProperties-mojo.html}trema:exportProperties}} goal exports the Trema database into Java properties. A separate properties file for each language is created.
   
-  More info about Java ResourceBundles/properties can be found here {{http://docs.oracle.com/javase/tutorial/i18n/resbundle/index.html}} 
+  More info about Java ResourceBundles/properties can be found here {{https://docs.oracle.com/javase/tutorial/i18n/resbundle/index.html}}
  
   The following snippet shows a minimal configuration needed to export the Trema database (*.trm file) into properties during the maven build:
 

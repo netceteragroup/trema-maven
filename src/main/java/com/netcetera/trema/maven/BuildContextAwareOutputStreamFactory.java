@@ -20,9 +20,8 @@ import com.netcetera.trema.core.exporting.OutputStreamFactory;
  * execution . When invoked through standard maven, a DefaultBuildContext is
  * used.
  *
- * See <a
- * href="http://wiki.eclipse.org/M2E_compatible_maven_plugins">http://wiki
- * .eclipse.org/M2E_compatible_maven_plugins</a>
+ * See <a href="https://wiki.eclipse.org/M2E_compatible_maven_plugins">
+ * https://wiki.eclipse.org/M2E_compatible_maven_plugins</a>
  *
  * @author tzueblin
  *
