@@ -75,7 +75,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Dependencies -->
-    <trema-core.version>0.3.0</trema-core.version>
+    <trema-core.version>0.4.0</trema-core.version>
     <hamcrest.version>2.2</hamcrest.version>
     <junit.version>5.8.2</junit.version>
     <mockito.version>4.1.0</mockito.version>
